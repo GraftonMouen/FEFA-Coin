@@ -11,7 +11,10 @@
         .container { max-width: 600px; margin: 50px auto; padding: 20px; background: #222; border-radius: 10px; }
         button { padding: 10px; margin: 10px; cursor: pointer; background: #f0b90b; border: none; color: black; font-size: 16px; }
         button:hover { background: #ffcc00; }
-        .team img { width: 100px; height: 100px; border-radius: 10px; margin: 10px; }
+        .team { display: flex; justify-content: space-around; flex-wrap: wrap; }
+        .team-member { text-align: center; margin: 20px; }
+        .team img { width: 100px; height: 100px; border-radius: 10px; }
+        .job-title { font-size: 18px; font-weight: bold; color: #f0b90b; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -37,11 +40,26 @@
     <div class="container">
         <h2>Meet the Team</h2>
         <div class="team">
-            <img src="team1.png" alt="Team Member 1">
-            <img src="team2.png" alt="Team Member 2">
-            <img src="team3.png" alt="Team Member 3">
-            <img src="team4.png" alt="Team Member 4">
-            <img src="team5.png" alt="Team Member 5">
+            <div class="team-member">
+                <img src="team1.png" alt="Team Member 1">
+                <p class="job-title">CEO</p>
+            </div>
+            <div class="team-member">
+                <img src="team2.png" alt="Team Member 2">
+                <p class="job-title">Marketing Director</p>
+            </div>
+            <div class="team-member">
+                <img src="team3.png" alt="Team Member 3">
+                <p class="job-title">Lead Developer</p>
+            </div>
+            <div class="team-member">
+                <img src="team4.png" alt="Team Member 4">
+                <p class="job-title">Community Manager</p>
+            </div>
+            <div class="team-member">
+                <img src="team5.png" alt="Team Member 5">
+                <p class="job-title">Graphic Designer</p>
+            </div>
         </div>
     </div>
 </body>
