@@ -42,3 +42,8 @@ async function buyFEFA() {
         alert("Phantom Wallet not detected.");
     }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const connectButton = document.querySelector('button');
+    connectButton.addEventListener('click', connectPhantomWallet);
+});
