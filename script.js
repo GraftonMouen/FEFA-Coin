@@ -1,50 +1,44 @@
-// script.js
-
-let buyers = 0;
-let sellers = 0;
-
-// Function to update the spaceship's position and visual effects
-function updateSpaceshipPosition() {
-  const spaceship = document.getElementById("spaceship");
-  const rocketTrail = document.getElementById("rocket-trail");
-  const progressBar = document.getElementById("progress");
-  const totalActions = buyers + sellers;
-  
-  // If no actions, no movement
-  if (totalActions === 0) {
-    return;
-  }
-
-  // Calculate progress (buyers vs total actions)
-  let progressPercentage = (buyers / totalActions) * 100;
-  progress.style.width = progressPercentage + "%";
-
-  // Animate spaceship up/down based on buyers and sellers
-  let spaceshipMovement = (buyers - sellers) * 10; // Adjust multiplier for smoother animation
-  spaceship.style.bottom = `${Math.max(0, spaceshipMovement)}px`;
-
-  // If spaceship is moving, show rocket exhaust
-  if (buyers > sellers) {
-    rocketTrail.style.opacity = 1;
-  } else {
-    rocketTrail.style.opacity = 0;
-  }
-
-  // Update the counts on the page
-  document.getElementById("buyers-count").innerText = buyers;
-  document.getElementById("sellers-count").innerText = sellers;
+async function connectPhantomWallet() {
+    if (window.solana && window.solana.isPhantom) {
+        try {
+            const response = await window.solana.connect();
+            alert("Connected: " + response.publicKey.toString());
+        } catch (error) {
+            console.error(error);
+            alert("Connection failed.");
+        }
+    } else {
+        alert("Phantom Wallet not found. Please install it.");
+    }
 }
 
-// Simulate Buy and Sell actions (to be replaced by real blockchain data)
-function simulateAction(type) {
-  if (type === "buy") {
-    buyers++;
-  } else if (type === "sell") {
-    sellers++;
-  }
-  updateSpaceshipPosition();
-}
+async function buyFEFA() {
+    const contractAddress = "83Mq5Td8xLkHiexZqdsBL2WxUB4X9LiBd2DWiF9Dpump";
+    const amount = prompt("Enter amount of SOL to swap for FEFA:");
 
-// Example Simulated Actions (for testing purposes)
-setInterval(() => simulateAction("buy"), 2000);  // Simulate a "buy" every 2 seconds
-setInterval(() => simulateAction("sell"), 4000); // Simulate a "sell" every 4 seconds
+    if (!amount) return;
+
+    if (window.solana && window.solana.isPhantom) {
+        const provider = window.solana;
+        const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
+        const sender = provider.publicKey;
+
+        const transaction = new solanaWeb3.Transaction().add(
+            solanaWeb3.SystemProgram.transfer({
+                fromPubkey: sender,
+                toPubkey: new solanaWeb3.PublicKey(contractAddress),
+                lamports: solanaWeb3.LAMPORTS_PER_SOL * parseFloat(amount),
+            })
+        );
+
+        try {
+            const signature = await provider.signAndSendTransaction(transaction);
+            alert("Transaction sent: " + signature);
+        } catch (error) {
+            console.error(error);
+            alert("Transaction failed.");
+        }
+    } else {
+        alert("Phantom Wallet not detected.");
+    }
+}
