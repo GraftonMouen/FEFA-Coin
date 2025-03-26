@@ -1,25 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spaceship Liquidity Tracker</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEFA Coin</title>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <script src="script.js" defer></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #111; color: white; }
+        .container { max-width: 600px; margin: 50px auto; padding: 20px; background: #222; border-radius: 10px; }
+        button { padding: 10px; margin: 10px; cursor: pointer; background: #f0b90b; border: none; color: black; font-size: 16px; }
+        button:hover { background: #ffcc00; }
+        .team img { width: 100px; height: 100px; border-radius: 10px; margin: 10px; }
+    </style>
 </head>
 <body>
-  <div id="container">
-    <div id="progress-bar">
-      <div id="progress"></div>
+    <div class="container">
+        <img src="logo.png" alt="FEFA Coin Logo" style="width:150px; height:auto; margin-bottom: 20px;">
+        <h1>Welcome to FEFA Coin</h1>
+        <p>The decentralized meme coin for soccer degens.</p>
+        <button onclick="connectPhantomWallet()">Connect Phantom Wallet</button>
+        <button onclick="buyFEFA()">Buy FEFA</button>
     </div>
-    <div id="spaceship-container">
-      <div id="rocket-trail"></div>
-      <img id="spaceship" src="spaceship.png" alt="Spaceship">
+
+    <div class="container">
+        <h2>Tokenomics</h2>
+        <p>100% Fair Launch | No Presale | Community-Driven</p>
     </div>
-    <div id="liquidity-info">
-      <p>Buyers: <span id="buyers-count">0</span></p>
-      <p>Sellers: <span id="sellers-count">0</span></p>
+
+    <div class="container">
+        <h2>Roadmap</h2>
+        <p>✅ Phase 1: Launch FEFA Coin<br>✅ Phase 2: Airdrops & Community Growth<br>🚀 Phase 3: Merch Drop & Partnerships</p>
     </div>
-  </div>
-  <script src="script.js"></script>
+
+    <div class="container">
+        <h2>Meet the Team</h2>
+        <div class="team">
+            <img src="team1.png" alt="Team Member 1">
+            <img src="team2.png" alt="Team Member 2">
+            <img src="team3.png" alt="Team Member 3">
+            <img src="team4.png" alt="Team Member 4">
+            <img src="team5.png" alt="Team Member 5">
+        </div>
+    </div>
 </body>
 </html>
