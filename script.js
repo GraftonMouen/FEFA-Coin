@@ -5,7 +5,7 @@ let walletAddress = null; // Store connected wallet address
 const network = "devnet"; // Change to 'mainnet-beta' for production
 
 // FEFA Coin Wallet Address (Replace this with the actual wallet address)
-const FEFA_WALLET_ADDRESS = "YOUR_FEFA_WALLET_ADDRESS_HERE"; 
+const FEFA_WALLET_ADDRESS = "83Mq5Td8xLkHiexZqdsBL2WxUB4X9LiBd2DWiF9Dpump"; 
 
 // Check if Phantom Wallet is installed
 async function checkPhantomWallet() {
@@ -53,7 +53,7 @@ async function buyFEFA() {
             SystemProgram.transfer({
                 fromPubkey: new PublicKey(walletAddress),
                 toPubkey: recipient,
-                lamports: 10000000, // Example: 0.01 SOL (Change to FEFA's price)
+                lamports: 10000000, // Example: 0.01 SOL (Change this for correct price)
             })
         );
 
