@@ -4,36 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FEFA Coin</title>
-    
-    <!-- Load Solana Web3.js via CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.75.0/web3.min.js"></script>
 
-    <!-- Load External JavaScript -->
+    <!-- Solana Web3.js -->
+    <script src="https://unpkg.com/@solana/web3.js@1.75.0/dist/web3.min.js"></script>
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Custom JavaScript -->
     <script src="script.js" defer></script>
-
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #111; color: white; }
-        .container { max-width: 600px; margin: 50px auto; padding: 20px; background: #222; border-radius: 10px; }
-        button { padding: 10px; margin: 10px; cursor: pointer; background: #f0b90b; border: none; color: black; font-size: 16px; }
-        button:hover { background: #ffcc00; }
-        .team { display: flex; justify-content: space-around; flex-wrap: wrap; }
-        .team-member { text-align: center; margin: 20px; }
-        .team img { width: 100px; height: 100px; border-radius: 10px; }
-        .job-title { font-size: 18px; font-weight: bold; color: #f0b90b; margin-top: 10px; }
-    </style>
 </head>
 <body>
     <div class="container">
-        <img src="logo.png" alt="FEFA Coin Logo" style="width:150px; height:auto; margin-bottom: 20px;">
+        <img src="logo.png" alt="FEFA Coin Logo" class="logo">
         <h1>Welcome to FEFA Coin</h1>
         <p>The decentralized meme coin for soccer degens.</p>
-        <p>CA: 83Mq5Td8xLkHiexZqdsBL2WxUB4X9LiBd2DWiF9Dpump</p>
+        <p>Contract Address: <br><strong>83Mq5Td8xLkHiexZqdsBL2WxUB4X9LiBd2DWiF9Dpump</strong></p>
 
         <!-- Connect Wallet Section -->
-        <button id="connect-wallet">Connect Phantom Wallet</button>
+        <button id="connect-wallet">Connect Wallet</button>
         <p id="wallet-status">Not Connected</p>
 
-        <button id="buy-fefa">Buy FEFA</button>
+        <button onclick="connectPhantomWallet()">Connect Phantom Wallet</button>
+        <button onclick="buyFEFA()">Buy FEFA</button>
     </div>
 
     <div class="container">
