@@ -1,18 +1,19 @@
+// Ensure Solana Web3.js is loaded
+if (typeof solanaWeb3 === "undefined") {
+    alert("❌ Solana Web3.js not loaded. Check your script source.");
+}
+
 // Solana Mainnet RPC URL
 const SOLANA_NETWORK = "https://api.mainnet-beta.solana.com";
-
-// Set up connection to Solana
 const connection = new solanaWeb3.Connection(SOLANA_NETWORK);
 
 // Phantom Wallet Connection Function
 async function connectPhantomWallet() {
     if (window.solana && window.solana.isPhantom) {
         try {
-            // Request connection
             const response = await window.solana.connect();
             console.log("✅ Connected to Phantom Wallet:", response.publicKey.toString());
 
-            // Update UI
             document.getElementById("wallet-status").innerText = `Connected: ${response.publicKey.toString()}`;
             document.getElementById("connect-wallet").innerText = "Wallet Connected";
 
@@ -49,8 +50,7 @@ async function buyFEFA() {
             })
         );
 
-        // Request Signature
-        const signature = await provider.signAndSendTransaction(transaction);
+        const { signature } = await provider.signAndSendTransaction(transaction);
         console.log("✅ Transaction Signature:", signature);
         alert(`✅ Transaction Sent! Signature: ${signature}`);
     } catch (error) {
