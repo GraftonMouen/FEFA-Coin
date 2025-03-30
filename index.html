@@ -4,29 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FEFA Coin</title>
-
-    <!-- Solana Web3.js -->
-    <script src="https://unpkg.com/@solana/web3.js@1.75.0/dist/web3.min.js"></script>
-
-    <!-- External Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
-
-    <!-- Custom JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.75.0/solanaWeb3.min.js"></script>
     <script src="script.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <img src="logo.png" alt="FEFA Coin Logo" class="logo">
         <h1>Welcome to FEFA Coin</h1>
         <p>The decentralized meme coin for soccer degens.</p>
-        <p>Contract Address: <br><strong>83Mq5Td8xLkHiexZqdsBL2WxUB4X9LiBd2DWiF9Dpump</strong></p>
+        <p>Contract Address: <span class="contract-address">83Mq5Td8xLkHiexZqdsBL2WxUB4X9LiBd2DWiF9Dpump</span></p>
 
-        <!-- Connect Wallet Section -->
+        <!-- Wallet Connection -->
         <button id="connect-wallet">Connect Wallet</button>
         <p id="wallet-status">Not Connected</p>
 
-        <button onclick="connectPhantomWallet()">Connect Phantom Wallet</button>
-        <button onclick="buyFEFA()">Buy FEFA</button>
+        <!-- Buy Button -->
+        <button id="buy-fefa" disabled>Buy FEFA</button>
     </div>
 
     <div class="container">
