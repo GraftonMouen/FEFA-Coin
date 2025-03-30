@@ -1,71 +1,62 @@
-// Solana Mainnet Connection
-const SOLANA_NETWORK = "https://api.mainnet-beta.solana.com"; // Mainnet endpoint
-const connection = new solanaWeb3.Connection(SOLANA_NETWORK);
-const FEFA_COIN_ADDRESS = "83Mq5Td8xLkHiexZqdsBL2WxUB4X9LiBd2DWiF9Dpump";
+// Solana network setup
+const SOLANA_NETWORK = "mainnet-beta"; // Ensure we're using mainnet
+const FEFA_WALLET = "83Mq5Td8xLkHiexZqdsBL2WxUB4X9LiBd2DWiF9Dpump";
 
-// Check if Phantom Wallet is installed
-async function checkPhantomWallet() {
-    if (window.solana && window.solana.isPhantom) {
-        console.log("✅ Phantom Wallet is installed!");
-        return true;
-    } else {
-        alert("❌ Please install Phantom Wallet.");
-        return false;
-    }
-}
+let walletAddress = null;
 
-// Connect to Phantom Wallet
 async function connectPhantomWallet() {
-    const isPhantomAvailable = await checkPhantomWallet();
-    if (!isPhantomAvailable) return;
-
-    try {
-        const response = await window.solana.connect();
-        console.log("✅ Connected to Phantom wallet:", response.publicKey.toString());
-
-        // Update UI
-        document.getElementById("wallet-status").innerText = `Connected: ${response.publicKey.toString()}`;
-        document.getElementById("connect-wallet").innerText = "Wallet Connected";
-    } catch (error) {
-        console.error("❌ Error connecting to wallet:", error);
-        document.getElementById("wallet-status").innerText = "Failed to connect.";
-    }
-}
-
-// Function to simulate buying FEFA
-async function buyFEFA() {
-    const isPhantomAvailable = await checkPhantomWallet();
-    if (!isPhantomAvailable) return;
-
-    const provider = window.solana;
-    if (!provider.isConnected) {
-        alert("❌ Connect your Phantom Wallet first.");
+    if (!window.solana || !window.solana.isPhantom) {
+        alert("❌ Phantom Wallet not installed. Please install it.");
         return;
     }
 
     try {
-        // Create a transaction
-        const transaction = new solanaWeb3.Transaction();
-        const recipient = new solanaWeb3.PublicKey(FEFA_COIN_ADDRESS);
+        // Connect to Phantom Wallet
+        const response = await window.solana.connect();
+        walletAddress = response.publicKey.toString();
 
-        // Add instruction to send 0.01 SOL to FEFA contract
-        transaction.add(
-            solanaWeb3.SystemProgram.transfer({
-                fromPubkey: provider.publicKey,
-                toPubkey: recipient,
-                lamports: 10000000, // 0.01 SOL
-            })
-        );
-
-        // Request Signature from Wallet
-        const { signature } = await provider.signAndSendTransaction(transaction);
-        console.log("✅ Transaction sent! Signature:", signature);
-        alert(`✅ Transaction sent!\nSignature: ${signature}`);
+        // Update UI
+        document.getElementById("wallet-status").innerText = `✅ Connected: ${walletAddress}`;
+        document.getElementById("connect-wallet").innerText = "Wallet Connected";
+        document.getElementById("buy-fefa").disabled = false; // Enable buy button
     } catch (error) {
-        console.error("❌ Transaction failed:", error);
-        alert("❌ Transaction failed. Check console for details.");
+        console.error("❌ Error connecting to wallet:", error);
+        document.getElementById("wallet-status").innerText = "❌ Connection Failed";
     }
 }
 
-// Event listener for "Connect Wallet" button
+// Function to handle FEFA purchase
+async function buyFEFA() {
+    if (!walletAddress) {
+        alert("⚠ Please connect your wallet first!");
+        return;
+    }
+
+    try {
+        const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl(SOLANA_NETWORK));
+        const transaction = new solanaWeb3.Transaction().add(
+            solanaWeb3.SystemProgram.transfer({
+                fromPubkey: new solanaWeb3.PublicKey(walletAddress),
+                toPubkey: new solanaWeb3.PublicKey(FEFA_WALLET),
+                lamports: solanaWeb3.LAMPORTS_PER_SOL * 0.1, // 0.1 SOL as an example
+            })
+        );
+
+        transaction.feePayer = new solanaWeb3.PublicKey(walletAddress);
+        transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+
+        // Sign and send transaction
+        const signedTransaction = await window.solana.signTransaction(transaction);
+        const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+
+        alert(`✅ Transaction Sent! Signature: ${signature}`);
+        console.log(`✅ Transaction Success: https://solscan.io/tx/${signature}`);
+    } catch (error) {
+        console.error("❌ Transaction failed:", error);
+        alert("❌ Transaction Failed!");
+    }
+}
+
+// Event Listeners
 document.getElementById("connect-wallet").addEventListener("click", connectPhantomWallet);
+document.getElementById("buy-fefa").addEventListener("click", buyFEFA);
