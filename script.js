@@ -1,10 +1,10 @@
-// Solana web3.js functions
+// Import necessary Solana web3.js functions
 const { Connection, PublicKey, clusterApiUrl, Transaction, SystemProgram } = solanaWeb3;
 
-let walletAddress = null; // Store connected wallet address
-const network = "devnet"; // Change to 'mainnet-beta' for production
+let walletAddress = null; // Store the connected wallet address
+const network = "mainnet-beta"; // Change to "devnet" for testing if needed
 
-// FEFA Coin Wallet Address (Replace this with the actual wallet address)
+// FEFA Coin Wallet Address (Replace this with your project's wallet address)
 const FEFA_WALLET_ADDRESS = "83Mq5Td8xLkHiexZqdsBL2WxUB4X9LiBd2DWiF9Dpump"; 
 
 // Check if Phantom Wallet is installed
@@ -49,14 +49,18 @@ async function buyFEFA() {
         const connection = new Connection(clusterApiUrl(network), "confirmed");
         const recipient = new PublicKey(FEFA_WALLET_ADDRESS);
 
+        // Define the transaction amount (adjust as needed)
+        const lamportsToSend = 10000000; // Example: 0.01 SOL
+
         const transaction = new Transaction().add(
             SystemProgram.transfer({
                 fromPubkey: new PublicKey(walletAddress),
                 toPubkey: recipient,
-                lamports: 10000000, // Example: 0.01 SOL (Change this for correct price)
+                lamports: lamportsToSend, 
             })
         );
 
+        // Request wallet to sign and send the transaction
         const { signature } = await window.solana.signAndSendTransaction(transaction);
         console.log("✅ Transaction successful:", signature);
         alert(`✅ Transaction Successful! TX ID: ${signature}`);
