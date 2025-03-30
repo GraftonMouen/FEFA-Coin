@@ -1,0 +1,65 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #111;
+    color: white;
+}
+
+/* Container */
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #222;
+    border-radius: 10px;
+}
+
+/* Logo */
+.logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+button {
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    background: #f0b90b;
+    border: none;
+    color: black;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #ffcc00;
+}
+
+/* Team Section */
+.team {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.team-member {
+    text-align: center;
+    margin: 20px;
+}
+
+.team img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+}
+
+/* Job Title */
+.job-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #f0b90b;
+    margin-top: 10px;
+}
