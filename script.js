@@ -1,85 +1,64 @@
-// Import required libraries for Solana
-import { Connection, Keypair, Transaction, PublicKey } from "@solana/web3.js";
-import { getAssociatedTokenAddress, createTransferInstruction, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+// Solana Mainnet RPC URL
+const SOLANA_NETWORK = "https://api.mainnet-beta.solana.com";
 
-// Your FEFA Coin mint address (from pump.fun)
-const FEFA_MINT_ADDRESS = new PublicKey("83Mq5Td8xLkHiexZqdsBL2WxUB4X9LiBd2DWiF9Dpump");
+// Set up connection to Solana
+const connection = new solanaWeb3.Connection(SOLANA_NETWORK);
 
-// Connect to the Solana network (Mainnet)
-const network = "https://api.mainnet-beta.solana.com"; // Mainnet endpoint
-const connection = new Connection(network);
-
-// Connect to Phantom Wallet
+// Phantom Wallet Connection Function
 async function connectPhantomWallet() {
     if (window.solana && window.solana.isPhantom) {
         try {
-            // Connect Phantom wallet
+            // Request connection
             const response = await window.solana.connect();
-            console.log("Connected to Phantom wallet:", response.publicKey.toString());
+            console.log("✅ Connected to Phantom Wallet:", response.publicKey.toString());
+
+            // Update UI
             document.getElementById("wallet-status").innerText = `Connected: ${response.publicKey.toString()}`;
+            document.getElementById("connect-wallet").innerText = "Wallet Connected";
+
         } catch (error) {
-            console.error("Error connecting to wallet:", error);
+            console.error("❌ Error connecting to Phantom Wallet:", error);
             document.getElementById("wallet-status").innerText = "Failed to connect.";
         }
     } else {
-        alert("Please install Phantom Wallet.");
+        alert("❌ Phantom Wallet not installed. Please install it.");
     }
 }
 
-// Handle buying FEFA token
+// Function to Buy FEFA
 async function buyFEFA() {
     if (!window.solana || !window.solana.isPhantom) {
-        alert("Please install Phantom Wallet.");
+        alert("❌ Please connect your Phantom Wallet first.");
         return;
     }
 
-    const wallet = window.solana;
-
     try {
-        // Get the wallet's public key
-        const publicKey = wallet.publicKey;
+        const provider = window.solana;
+        const walletPublicKey = provider.publicKey;
 
-        // Fetch the associated token address for the wallet (this is where the FEFA Coin will be sent)
-        const associatedTokenAddress = await getAssociatedTokenAddress(FEFA_MINT_ADDRESS, publicKey);
-
-        // Check if the token account exists, if not, create it
-        let tokenAccountInfo = await connection.getAccountInfo(associatedTokenAddress);
-        if (!tokenAccountInfo) {
-            console.log("No associated token account found. Creating one...");
-            // Create an associated token account (You would need to handle this step)
-            // Consider using the Token Program's `createAssociatedTokenAccount` method
-            // to create the account for the user if it doesn't exist.
-            alert("No associated token account found. Please create one first.");
+        if (!walletPublicKey) {
+            alert("❌ Wallet not connected.");
             return;
         }
 
-        // Create the transfer instruction to send FEFA Coin (this example sends 1 FEFA)
-        const amount = 1 * 10 ** 9; // Amount in smallest units (lamports), adjust as needed
-        const transaction = new Transaction().add(
-            createTransferInstruction(
-                associatedTokenAddress, // From account (wallet's token account)
-                new PublicKey("destination-wallet-public-key"), // Destination address (where you want to send the token)
-                publicKey, // Wallet's public key (signer)
-                amount, // Amount to send in the smallest unit
-                [], // Signers
-                TOKEN_PROGRAM_ID // Token Program ID
-            )
+        const transaction = new solanaWeb3.Transaction().add(
+            solanaWeb3.SystemProgram.transfer({
+                fromPubkey: walletPublicKey,
+                toPubkey: new solanaWeb3.PublicKey("83Mq5Td8xLkHiexZqdsBL2WxUB4X9LiBd2DWiF9Dpump"), // Your FEFA Coin Address
+                lamports: solanaWeb3.LAMPORTS_PER_SOL * 0.01, // Example: 0.01 SOL
+            })
         );
 
-        // Sign the transaction
-        const { signature } = await window.solana.signTransaction(transaction);
-        console.log("Transaction Signature:", signature);
-
-        // Send the transaction to the network
-        const txId = await connection.sendRawTransaction(transaction.serialize());
-        console.log("Transaction sent with ID:", txId);
-        alert("Transaction successful!");
+        // Request Signature
+        const signature = await provider.signAndSendTransaction(transaction);
+        console.log("✅ Transaction Signature:", signature);
+        alert(`✅ Transaction Sent! Signature: ${signature}`);
     } catch (error) {
-        console.error("Error buying FEFA:", error);
-        alert("Failed to complete the transaction.");
+        console.error("❌ Error processing transaction:", error);
+        alert("❌ Transaction failed.");
     }
 }
 
-// Event listeners
+// Event Listeners
 document.getElementById("connect-wallet").addEventListener("click", connectPhantomWallet);
-document.getElementById("buyFEFA").addEventListener("click", buyFEFA);
+document.getElementById("buy-fefa").addEventListener("click", buyFEFA);
